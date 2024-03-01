@@ -31,7 +31,7 @@ function Application({ Component, pageProps }) {
         }}
         padding="md"
       >
-        <AppShell.Header bg="blue">
+        <AppShell.Header bg="blue" c="white">
           <Group h="100%" px="md">
             <Burger
               opened={opened}
@@ -39,6 +39,7 @@ function Application({ Component, pageProps }) {
               hiddenFrom="sm"
               size="sm"
               c="white"
+              color="white"
             />
             <Text c="white" size="xl" weight="bold">Labelicious</Text>
           </Group>
