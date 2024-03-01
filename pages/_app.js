@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { Sidebar } from "@components/layout/sidebar/sidebar";
+import { usePathname } from "next/navigation";
 const theme = createTheme({
   /** Put your mantine theme override here */
 });
@@ -45,7 +46,7 @@ function Application({ Component, pageProps }) {
           </Group>
         </AppShell.Header>
         <AppShell.Navbar>
-          <Sidebar />
+          <Sidebar onClick={toggle} />
         </AppShell.Navbar>
         <AppShell.Main>
           <Component {...pageProps} />

@@ -4,11 +4,12 @@ import {
     IconBuildingStore,
     IconTags,
     IconTagStarred,
-    IconSwitchHorizontal,
-    IconLogout
+    // IconSwitchHorizontal,
+    // IconLogout
 } from '@tabler/icons-react';
 import classes from './sidebar.module.css';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const data = [
     { link: '/stock', label: 'Stock file', icon: IconBuildingStore },
@@ -16,18 +17,16 @@ const data = [
     { link: '/promo-labels', label: 'Promos', icon: IconTagStarred },
 ];
 
-export function Sidebar() {
-    const [active, setActive] = useState('');
+export function Sidebar({ onClick }) {
+    const pathname = usePathname();
 
     const links = data.map((item) => (
         <Link
             className={classes.link}
-            data-active={item.label === active || undefined}
+            data-active={item.link === pathname || undefined}
             href={item.link}
             key={item.label}
-            onClick={() => {
-                setActive(item.label);
-            }}
+            onClick={onClick}
         >
             <item.icon className={classes.linkIcon} stroke={1.5} />
             <span>{item.label}</span>
