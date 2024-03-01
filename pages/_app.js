@@ -9,6 +9,7 @@ import {
   AppShell,
   Group,
   Burger,
+  Text,
 } from "@mantine/core";
 import { useDisclosure } from '@mantine/hooks';
 import { Sidebar } from "@components/layout/sidebar/sidebar";
@@ -22,7 +23,7 @@ function Application({ Component, pageProps }) {
   return (
     <MantineProvider theme={theme}>
       <AppShell
-        // header={{ height: 60 }}
+        header={{ height: 60 }}
         navbar={{
           width: 300,
           breakpoint: "sm",
@@ -30,16 +31,18 @@ function Application({ Component, pageProps }) {
         }}
         padding="md"
       >
-        {/* <AppShell.Header>
+        <AppShell.Header bg="blue">
           <Group h="100%" px="md">
             <Burger
               opened={opened}
               onClick={toggle}
               hiddenFrom="sm"
               size="sm"
+              c="white"
             />
+            <Text c="white" size="xl" weight="bold">Labelicious</Text>
           </Group>
-        </AppShell.Header> */}
+        </AppShell.Header>
         <AppShell.Navbar>
           <Sidebar />
         </AppShell.Navbar>
@@ -47,7 +50,7 @@ function Application({ Component, pageProps }) {
           <Component {...pageProps} />
         </AppShell.Main>
       </AppShell>
-    </MantineProvider>
+    </MantineProvider >
   );
 }
 
