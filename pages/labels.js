@@ -1,6 +1,8 @@
 
 // const promo = "Promotion ID: 8022650010000 - Peperami Pizza Bun £1.25\nStart Date: Mon 26th Feb 2024,End Date: Tue 26th Mar 2024,Promotion Type: Reduced ToThe following Items are Reduced to 1.25";
 
+import { useState } from "react";
+
 const promos = ["Promotion ID: 8022460010000 - Hardys Stamp £6.49\nStart Date: Mon 26th Feb 2024,End Date: Tue 26th Mar 2024,Promotion Type: Reduced ToThe following Items are Reduced to 6.49",
     "Promotion ID: 8022470010000 - McGuigan Black £6.99\nStart Date: Mon 26th Feb 2024,End Date: Tue 26th Mar 2024,Promotion Type: Reduced ToThe following Items are Reduced to 6.99",
     "Promotion ID: 8022480010000 - Trivento Sel £8.49\nStart Date: Mon 26th Feb 2024,End Date: Tue 26th Mar 2024,Promotion Type: Reduced ToThe following Items are Reduced to 8.49",
@@ -28,50 +30,47 @@ const promos = ["Promotion ID: 8022460010000 - Hardys Stamp £6.49\nStart Date: 
     "Promotion ID: 8022700010000 - Walls Viennetta 2for£3\nStart Date: Mon 26th Feb 2024,End Date: Tue 26th Mar 2024,Promotion Type: Multi BuyBuy 2 of the following Items for 3.00",
     "Promotion ID: 8022850010000 - Jacks Med Chicken £3.99\nStart Date: Mon 26th Feb 2024,End Date: Tue 26th Mar 2024,Promotion Type: Reduced ToThe following Items are Reduced to 3.99"];
 
+function parsePromo(promo) {
+    const promotionIdRegex = /Promotion ID: (\d+) - /;
+    const promoPriceRegEx = /(?:\£\d+(?:\.\d+)?)|\d+(?:\.\d+)?\s*(?:for\s*\£\d+(?:\.\d+)?)|(?:\d+)\s*for\s*\£(\d+(?:\.\d+)?)?\n/gi;
+    const productNameRegEx = /(?<=Promotion ID: \d+ - )[\w\s/]+((?= £\d+?\.?\d{0,2}?)|(?= \d+for£\d+))/gi
+
+
+    const result = {
+        id: promo.match(promotionIdRegex)[1],
+        name: promo.match(productNameRegEx)[0],
+        price: promo.match(promoPriceRegEx)[0],
+    };
+
+    console.log(result);
+
+    return result;
+}
+
 export default function Labels() {
 
-    for (const promo of promos) {
-        const promotionIdRegex = /Promotion ID: (\d+) - /;
-        // const productPriceRegex = /£(\d+\.\d{2})/;
-        // const productPriceRegexV2 = /(\d{1,3}(\.\d{2})?|\d{1,3}for\£\d{1,3}(\.\d{2})?)/;
-        const promoPriceRegEx = /(?:\£\d+(?:\.\d+)?)|\d+(?:\.\d+)?\s*(?:for\s*\£\d+(?:\.\d+)?)|(?:\d+)\s*for\s*\£(\d+(?:\.\d+)?)?\n/gi;
-        // const productNameRegex = /Promotion ID: \d+ - (.+) [d.|£]/;
-        // const productNameRegEx = /Promotion ID: \d+ - (.+)(?:\£\d+(?:\.\d+)?)|\d+(?:\.\d+)?\s*(?:for\s*\£\d+(?:\.\d+)?)|(?:\d+)\s*for\s*\£(\d+(?:\.\d+)?)?\n/
-        // const startDateRegex = /Start Date: (?<start_date>.+),End Date/;
-        // const endDateRegex = /End Date: (?<end_date>.+),Promotion Type/;
-        // const protectionTypeRegex = /Promotion Type: (?<protection_type>.+)\b/;
-        // const promotionTextRegex = /(.+)/;
+    const [labelPromos,] = useState(promos.map(parsePromo));
 
-        const productNameRegEx = /(?<=Promotion ID: \d+ - )[\w\s/]+((?= £\d+?\.?\d{0,2}?)|(?= \d+for£\d+))/gi
+    // for (const promo of promos) {
+    //     const promotionIdRegex = /Promotion ID: (\d+) - /;
+    //     const promoPriceRegEx = /(?:\£\d+(?:\.\d+)?)|\d+(?:\.\d+)?\s*(?:for\s*\£\d+(?:\.\d+)?)|(?:\d+)\s*for\s*\£(\d+(?:\.\d+)?)?\n/gi;
+    //     const productNameRegEx = /(?<=Promotion ID: \d+ - )[\w\s/]+((?= £\d+?\.?\d{0,2}?)|(?= \d+for£\d+))/gi
 
-        console.log({
-            id: promo.match(promotionIdRegex)[1],
-            name: promo.match(productNameRegEx)[0],
-            price: promo.match(promoPriceRegEx)[0],
-        })
-
-        // Extract information using regular expressions
-        const matches = {
-            // promotion_id: promo.match(promotionIdRegex),
-            // product_name: promo.match(productNameRegex),
-            // price: promo.match(productPriceRegex),
-            // priceV2: promo.match(productPriceRegexV2),
-            // priceV3: promo.match(promoPriceRegEx),
-            // start_date: promo.match(startDateRegex),
-            // end_date: promo.match(endDateRegex),
-            // protection_type: promo.match(protectionTypeRegex)[1].split(),
-            // promotion_text: promo.match(promotionTextRegex)[1].trim(),
-        };
-
-        // console.log(matches);
-
-        // console.log(promo.match(productNameRegex)?.[1]);
-        // console.log(promo.match(promotionIdRegex)[1]);
-    }
+    //     console.log({
+    //         id: promo.match(promotionIdRegex)[1],
+    //         name: promo.match(productNameRegEx)[0],
+    //         price: promo.match(promoPriceRegEx)[0],
+    //     })
+    // }
 
     return (
         <div>
             <p>Labels</p>
+            {labelPromos.map((promo) => (
+                <div key={promo.id}>
+                    <span>{promo.name}</span> - <span>{promo.price}</span>
+                </div>
+            ))}
         </div>
     );
 }
