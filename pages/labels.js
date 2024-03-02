@@ -31,23 +31,32 @@ const promos = ["Promotion ID: 8022460010000 - Hardys Stamp £6.49\nStart Date: 
 export default function Labels() {
 
     for (const promo of promos) {
-        const promotionIdRegex = /Promotion ID: (\d+)/;
-        const productPriceRegex = /£(\d+\.\d{2})/;
-        const productPriceRegexV2 = /(\d{1,3}(\.\d{2})?|\d{1,3}for\£\d{1,3}(\.\d{2})?)/;
+        const promotionIdRegex = /Promotion ID: (\d+) - /;
+        // const productPriceRegex = /£(\d+\.\d{2})/;
+        // const productPriceRegexV2 = /(\d{1,3}(\.\d{2})?|\d{1,3}for\£\d{1,3}(\.\d{2})?)/;
         const promoPriceRegEx = /(?:\£\d+(?:\.\d+)?)|\d+(?:\.\d+)?\s*(?:for\s*\£\d+(?:\.\d+)?)|(?:\d+)\s*for\s*\£(\d+(?:\.\d+)?)?\n/gi;
-        const productNameRegex = /Promotion ID: \d+ - (.+) £\d+\.\d{2}/;
+        // const productNameRegex = /Promotion ID: \d+ - (.+) [d.|£]/;
+        // const productNameRegEx = /Promotion ID: \d+ - (.+)(?:\£\d+(?:\.\d+)?)|\d+(?:\.\d+)?\s*(?:for\s*\£\d+(?:\.\d+)?)|(?:\d+)\s*for\s*\£(\d+(?:\.\d+)?)?\n/
         // const startDateRegex = /Start Date: (?<start_date>.+),End Date/;
         // const endDateRegex = /End Date: (?<end_date>.+),Promotion Type/;
         // const protectionTypeRegex = /Promotion Type: (?<protection_type>.+)\b/;
         // const promotionTextRegex = /(.+)/;
 
+        const productNameRegEx = /(?<=Promotion ID: \d+ - )[\w\s/]+((?= £\d+?\.?\d{0,2}?)|(?= \d+for£\d+))/gi
+
+        console.log({
+            id: promo.match(promotionIdRegex)[1],
+            name: promo.match(productNameRegEx)[0],
+            price: promo.match(promoPriceRegEx)[0],
+        })
+
         // Extract information using regular expressions
         const matches = {
-            promotion_id: promo.match(promotionIdRegex),
-            product_name: promo.match(productNameRegex),
-            price: promo.match(productPriceRegex),
-            priceV2: promo.match(productPriceRegexV2),
-            priceV3: promo.match(promoPriceRegEx),
+            // promotion_id: promo.match(promotionIdRegex),
+            // product_name: promo.match(productNameRegex),
+            // price: promo.match(productPriceRegex),
+            // priceV2: promo.match(productPriceRegexV2),
+            // priceV3: promo.match(promoPriceRegEx),
             // start_date: promo.match(startDateRegex),
             // end_date: promo.match(endDateRegex),
             // protection_type: promo.match(protectionTypeRegex)[1].split(),
@@ -56,13 +65,8 @@ export default function Labels() {
 
         // console.log(matches);
 
-        console.log({
-            price: promo.match(productPriceRegex),
-            priceV2: promo.match(productPriceRegexV2),
-            priceV3: promo.match(promoPriceRegEx),
-        })
-        console.log(promo.match(productNameRegex)?.[1]);
-        console.log(promo.match(promotionIdRegex)[1]);
+        // console.log(promo.match(productNameRegex)?.[1]);
+        // console.log(promo.match(promotionIdRegex)[1]);
     }
 
     return (
