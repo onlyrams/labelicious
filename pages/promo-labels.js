@@ -1,6 +1,6 @@
 import { Dropzone } from "@mantine/dropzone";
 import { Card, Image, Text, Badge, Button, Group } from "@mantine/core";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
     cleanCsv,
     parseProductGroup,
@@ -11,61 +11,59 @@ import {
 import JsBarcode from "jsbarcode";
 
 const getPaddedBarcode = (barcode) => {
-    if (barcode.length < 12) {
-        return barcode.padStart(12, "0");
-    } else {
+    if (barcode.length == 13) {
         return barcode;
     }
-}
+
+    if (barcode.length < 13) {
+        return barcode.padStart(13, "0");
+    }
+
+    return barcode.slice(0, 13);
+};
 
 export default function PromoLabels() {
     const [promos, setPromos] = useState([]);
 
-    const onDropCallback = useCallback((files) => {
-        const reader = new FileReader();
-
+    const onDropCallbackAsync = async (files) => {
         const data = [];
-        reader.onload = () => {
-            const csv = cleanCsv(reader.result);
+        const fileContents = await files[0].text();
+        const csv = cleanCsv(fileContents);
 
-            const promotions = splitPromotions(csv);
+        const promotions = splitPromotions(csv);
 
-            for (const promotion of promotions) {
-                const [promo, ...groups] = splitProductGroupings(promotion);
+        for (const promotion of promotions) {
+            const [promo, ...groups] = splitProductGroupings(promotion);
 
-                const promoData = parsePromo(promo);
+            const promoData = parsePromo(promo);
 
-                data.push({ promoData, products: groups.map(parseProductGroup) });
-            }
-        };
+            data.push({ promoData, products: groups.map(parseProductGroup) });
+        }
 
-        reader.readAsText(files[0]);
+        setPromos(data);
+    };
 
-        console.log(data);
-        setTimeout(() => {
-            setPromos(data);
+    useEffect(() => {
+        try {
             JsBarcode(".barcode").init();
-        }, 1000);
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }, [promos]);
 
-        JsBarcode(".barcode").init();
-        setTimeout(() => {
-            JsBarcode(".barcode").init();
-        }, 3000)
-    });
-    console.log(promos);
     return (
         <div>
-            <Text>Promo Labels</Text>
             <Dropzone
-                onDrop={onDropCallback}
+                onDrop={onDropCallbackAsync}
                 accept={["text/csv"]}
                 maxFiles={1}
                 multiple={false}
             >
-                <Text ta="center">Drop stock file</Text>
+                <Text ta="center">Drop/select stock file</Text>
             </Dropzone>
             {promos.map((promo) => (
-                <Card shadow="sm" padding="lg" radius="md" withBorder key={promo.id}>
+                <Card shadow="sm" padding="lg" radius="md" withBorder key={promo.promoData.id}>
                     <Card.Section>
                         <Text fw={700} size="lg" padding="lg">
                             Promotion ID: {promo.promoData.id}
@@ -79,7 +77,7 @@ export default function PromoLabels() {
 
                     {promo.products.map((group) =>
                         group.map((product) => (
-                            <React.Fragment key={product.Barcode}>
+                            <React.Fragment key={promo.promoData.id + '-' + product.Barcode}>
                                 <Text size="sm" c="dimmed">
                                     {product.Description}
                                 </Text>
@@ -88,12 +86,13 @@ export default function PromoLabels() {
                                 </Text>
                                 <Text size="sm" c="dimmed">
                                     {product.Barcode}
-                                    <svg class="barcode"
+                                    <svg
+                                        className="barcode"
                                         jsbarcode-format="EAN13"
                                         jsbarcode-value={getPaddedBarcode(product.Barcode)}
                                         jsbarcode-textmargin="0"
-                                        jsbarcode-fontoptions="bold">
-                                    </svg>
+                                        jsbarcode-fontoptions="bold"
+                                    ></svg>
                                 </Text>
                             </React.Fragment>
                         ))
