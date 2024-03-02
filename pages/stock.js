@@ -5,7 +5,6 @@ import { useState } from "react";
 
 export default function Stock() {
     const [promotions, setPromotions] = useState([]);
-    console.log(promotions);
     return (
         <div>
             <Dropzone
@@ -17,39 +16,41 @@ export default function Stock() {
                     const promotionsToAdd = [];
 
                     reader.onload = () => {
-                        const csvText = reader.result;
+                        const csvText = reader.result.replace(/=/g, '');
                         const csvTextWithoutReportTitle = csvText.replace(
-                            "Current Promotions Report for Bury Road Store,,,,,\r\n,,,,,\r\n,,,,,\r\n,,,,,\r\n",
+                            "Current Promotions Report for Bury Road Store\n\n\n\n",
                             ""
                         );
 
-                        const splitOnGrouping = "\r\nGroup 1 Items,,,,,\r\n";
+                        console.log(JSON.stringify(csvTextWithoutReportTitle));
+
+                        var groupingSplitRegex = /\nGroup (\d+) Items\n/
 
                         for (const promotion of csvTextWithoutReportTitle.split(
-                            ",,,,,\r\n,,,,,\r\n,,,,,\r\n,,,,,\r\n,,,,,\r\n,,,,,\r\n,,,,,"
+                            "\n\n\n\n\n\n\n\n"
                         )) {
-                            const [promo, products] = promotion.split(splitOnGrouping);
-                            // console.log({ promo, products });
+                            // console.log(JSON.stringify(promotion));
+                            console.log(promotion.split(groupingSplitRegex));
+                            // const [promo, products] = promotion.split(groupingSplitRegex);
 
-                            parse(
-                                products,
-                                {
-                                    skipEmptyLines: true,
-                                    skipRecordsWithEmptyValues: true,
-                                    bom: true,
-                                    delimiter: ",",
-                                    columns: true,
-                                    trim: true,
-                                },
-                                (err, records) => {
-                                    // console.log(err);
+                            // parse(
+                            //     products,
+                            //     {
+                            //         skipEmptyLines: true,
+                            //         skipRecordsWithEmptyValues: true,
+                            //         bom: true,
+                            //         delimiter: ",",
+                            //         columns: true,
+                            //         trim: true,
+                            //     },
+                            //     (err, records) => {
+                            //         // console.log(err);
 
-                                    promotionsToAdd.push({ promotion: promo, products: records });
-                                }
-                            );
+                            //         promotionsToAdd.push({ promotion: promo, products: records });
+                            //     }
+                            // );
                         }
 
-                        console.log(promotionsToAdd);
 
                         setPromotions(promotionsToAdd);
 
@@ -61,7 +62,7 @@ export default function Stock() {
                         // console.log(firstPromotion.split(splitOnGrouping)[1]);
 
                         // console.log(csvTextWithoutReportTitle.split(',,,,,\r\n,,,,,\r\n,,,,,\r\n,,,,,\r\n,,,,,\r\n,,,,,\r\n,,,,,')[1]);
-                        // console.log({ csvText, csvTextWithoutReportTitle });
+                        // console.log({csvText, csvTextWithoutReportTitle});
                     };
 
                     reader.readAsText(files[0]);
@@ -71,16 +72,18 @@ export default function Stock() {
             >
                 <Text ta="center">Drop stock file</Text>
             </Dropzone>
-            {promotions.map((p) => (
-                <div key={p.promotion}>
-                    <p>{p.promotion}</p>
-                    {p.products.map((product) => (
-                        <p key={p.promotion + product.Barcode + product.Price}>
-                            (£{product.Price}) - {product.Barcode}
-                        </p>
-                    ))}
-                </div>
-            ))}
-        </div>
+            {
+                promotions.map((p) => (
+                    <div key={p.promotion}>
+                        <p>{p.promotion}</p>
+                        {p.products.map((product) => (
+                            <p key={p.promotion + product.Barcode + product.Price}>
+                                (£{product.Price}) - {product.Barcode}
+                            </p>
+                        ))}
+                    </div>
+                ))
+            }
+        </div >
     );
 }
