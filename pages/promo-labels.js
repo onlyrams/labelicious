@@ -10,6 +10,14 @@ import {
 } from "services/csv-parse";
 import JsBarcode from "jsbarcode";
 
+const getPaddedBarcode = (barcode) => {
+    if (barcode.length < 12) {
+        return barcode.padStart(12, "0");
+    } else {
+        return barcode;
+    }
+}
+
 export default function PromoLabels() {
     const [promos, setPromos] = useState([]);
 
@@ -82,7 +90,7 @@ export default function PromoLabels() {
                                     {product.Barcode}
                                     <svg class="barcode"
                                         jsbarcode-format="EAN13"
-                                        jsbarcode-value={product.Barcode}
+                                        jsbarcode-value={getPaddedBarcode(product.Barcode)}
                                         jsbarcode-textmargin="0"
                                         jsbarcode-fontoptions="bold">
                                     </svg>
@@ -91,23 +99,6 @@ export default function PromoLabels() {
                         ))
                     )}
                 </Card>
-            ))}
-
-            {promos.map((promo) => (
-                <div key={promo.id}>
-                    <Text>{promo.promoData.id}</Text>
-                    <Text>{promo.promoData.name}</Text>
-                    <Text>{promo.promoData.price}</Text>
-                    {promo.products.map((group) =>
-                        group.map((product) => (
-                            <React.Fragment key={product.Barcode}>
-                                <Text>{product.Description}</Text>
-                                <Text>{product.Price}</Text>
-                                <Text>{product.Barcode}</Text>
-                            </React.Fragment>
-                        ))
-                    )}
-                </div>
             ))}
         </div>
     );
