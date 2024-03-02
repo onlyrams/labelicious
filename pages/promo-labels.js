@@ -25,6 +25,8 @@ const getPaddedBarcode = (barcode) => {
 export default function PromoLabels() {
     const [promos, setPromos] = useState([]);
 
+    console.log(promos);
+
     const onDropCallbackAsync = async (files) => {
         const data = [];
         const fileContents = await files[0].text();
@@ -35,6 +37,10 @@ export default function PromoLabels() {
 
         for (const promotion of promotions) {
             const [promo, ...groups] = splitProductGroupings(promotion);
+
+            if (!promotion) {
+                return;
+            }
 
             const promoData = parsePromo(promo);
 
@@ -47,8 +53,7 @@ export default function PromoLabels() {
     useEffect(() => {
         try {
             JsBarcode(".barcode").init();
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e);
         }
     }, [promos]);
@@ -64,7 +69,13 @@ export default function PromoLabels() {
                 <Text ta="center">Drop/select stock file</Text>
             </Dropzone>
             {promos.map((promo) => (
-                <Card shadow="sm" padding="lg" radius="md" withBorder key={promo.promoData.id}>
+                <Card
+                    shadow="sm"
+                    padding="lg"
+                    radius="md"
+                    withBorder
+                    key={promo.promoData.id}
+                >
                     <Card.Section>
                         <Text fw={700} size="lg" padding="lg">
                             Promotion ID: {promo.promoData.id}
@@ -78,7 +89,7 @@ export default function PromoLabels() {
 
                     {promo.products.map((group) =>
                         group.map((product) => (
-                            <React.Fragment key={promo.promoData.id + '-' + product.Barcode}>
+                            <React.Fragment key={promo.promoData.id + "-" + product.Barcode}>
                                 <Text size="sm" c="dimmed">
                                     {product.Description}
                                 </Text>
@@ -93,7 +104,7 @@ export default function PromoLabels() {
                                         jsbarcode-value={getPaddedBarcode(product.Barcode)}
                                         jsbarcode-textmargin="0"
                                         jsbarcode-fontoptions="bold"
-                                    ></svg>
+                                    />
                                 </Text>
                             </React.Fragment>
                         ))

@@ -7,9 +7,9 @@ export function parsePromo(promo) {
 
 
     const result = {
-        id: promo.match(promotionIdRegex)?.[1] ?? `MISSING: ${promo}`,
-        name: promo.match(productNameRegEx)?.[0] ?? `MISSING: ${promo}`,
-        price: promo.match(promoPriceRegEx)?.[0] ?? `MISSING: ${promo}`,
+        id: promo.match(promotionIdRegex)?.[1] ?? `MISSING ID match: ${JSON.stringify(promo.match(promotionIdRegex))} ${promo}`,
+        name: promo.match(productNameRegEx)?.[0] ?? `MISSING NAME match: ${JSON.stringify(promo.match(productNameRegEx))} ${promo}`,
+        price: promo.match(promoPriceRegEx)?.[0] ?? `MISSING PRICE match: ${JSON.stringify(promo.match(promoPriceRegEx))} ${promo}`,
     };
 
 
