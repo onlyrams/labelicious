@@ -7,9 +7,9 @@ export function parsePromo(promo) {
 
 
     const result = {
-        id: promo.match(promotionIdRegex)[1],
-        name: promo.match(productNameRegEx)[0],
-        price: promo.match(promoPriceRegEx)[0],
+        id: promo.match(promotionIdRegex)?.[1] ?? `MISSING: ${promo}`,
+        name: promo.match(productNameRegEx)?.[0] ?? `MISSING: ${promo}`,
+        price: promo.match(promoPriceRegEx)?.[0] ?? `MISSING: ${promo}`,
     };
 
 
@@ -27,7 +27,7 @@ export function cleanCsv(csv) {
 
 export function splitPromotions(promotions) {
     return promotions.split(
-        "\n\n\n\n\n\n\n\n"
+        /\n{4,7}/gi
     );
 }
 

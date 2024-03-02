@@ -28,6 +28,7 @@ export default function PromoLabels() {
     const onDropCallbackAsync = async (files) => {
         const data = [];
         const fileContents = await files[0].text();
+        console.log(JSON.stringify(fileContents));
         const csv = cleanCsv(fileContents);
 
         const promotions = splitPromotions(csv);
