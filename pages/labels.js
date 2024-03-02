@@ -48,20 +48,7 @@ function parsePromo(promo) {
 }
 
 export default function Labels() {
-
     const [labelPromos,] = useState(promos.map(parsePromo));
-
-    // for (const promo of promos) {
-    //     const promotionIdRegex = /Promotion ID: (\d+) - /;
-    //     const promoPriceRegEx = /(?:\£\d+(?:\.\d+)?)|\d+(?:\.\d+)?\s*(?:for\s*\£\d+(?:\.\d+)?)|(?:\d+)\s*for\s*\£(\d+(?:\.\d+)?)?\n/gi;
-    //     const productNameRegEx = /(?<=Promotion ID: \d+ - )[\w\s/]+((?= £\d+?\.?\d{0,2}?)|(?= \d+for£\d+))/gi
-
-    //     console.log({
-    //         id: promo.match(promotionIdRegex)[1],
-    //         name: promo.match(productNameRegEx)[0],
-    //         price: promo.match(promoPriceRegEx)[0],
-    //     })
-    // }
 
     return (
         <div>

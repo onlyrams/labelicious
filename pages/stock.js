@@ -34,6 +34,29 @@ export default function Stock() {
                             console.log(promotion.split(groupingSplitRegex));
                             // const [promo, products] = promotion.split(groupingSplitRegex);
                             const [promo, ...rest] = promotion.split(groupingSplitRegex);
+
+                            console.log(rest);
+
+                            for (const product of rest) {
+                                console.log(product);
+                                parse(
+                                    product,
+                                    {
+                                        autoParse: true,
+                                        skipEmptyLines: true,
+                                        skipRecordsWithEmptyValues: true,
+                                        bom: true,
+                                        delimiter: ",",
+                                        trim: true,
+                                        columns: true,
+                                    },
+                                    (err, records) => {
+                                        console.log(records);
+
+                                        // promotionsToAdd.push({ promotion: promo, products: records });
+                                    }
+                                );
+                            }
                             console.log(JSON.stringify(promo));
 
                             promoStrings.push(promo);
