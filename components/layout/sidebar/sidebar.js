@@ -1,22 +1,21 @@
-import { useState } from 'react';
-import { Group, Code } from '@mantine/core';
 import {
-    IconBuildingStore,
+    IconBuildingWarehouse,
     IconTags,
     IconTagStarred,
-    // IconSwitchHorizontal,
-    // IconLogout
+    IconEdit
 } from '@tabler/icons-react';
 import classes from './sidebar.module.css';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const data = [
-    { link: '/stock', label: 'Stock file', icon: IconBuildingStore },
+    { link: '/stock', label: 'Stock file', icon: IconBuildingWarehouse },
     { link: '/labels', label: 'Labels', icon: IconTags },
     { link: '/promo-labels', label: 'Promos', icon: IconTagStarred },
+    { link: '/edit-label', label: 'Edit Label Templates', icon: IconEdit },
 ];
 
+/// Rename to 'Navigation' ///
 export function Sidebar({ onClick }) {
     const pathname = usePathname();
 
