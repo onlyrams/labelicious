@@ -66,7 +66,7 @@ export default function PromoLabels() {
                 maxFiles={1}
                 multiple={false}
             >
-                <Text ta="center">Drop/select stock file</Text>
+                <Text ta="center">Drop/select promo CSV file</Text>
             </Dropzone>
             {promos.map((promo) => (
                 <Card
@@ -75,9 +75,11 @@ export default function PromoLabels() {
                     radius="md"
                     withBorder
                     key={promo.promoData.id}
+                    mt="md"
+                    mb="md"
                 >
                     <Card.Section>
-                        <Text fw={700} size="lg" padding="lg">
+                        <Text ta="center" size="lg" padding="lg" pt="md">
                             Promotion ID: {promo.promoData.id}
                         </Text>
                     </Card.Section>
@@ -91,21 +93,15 @@ export default function PromoLabels() {
                         group.map((product) => (
                             <React.Fragment key={promo.promoData.id + "-" + product.Barcode}>
                                 <Text size="sm" c="dimmed">
-                                    {product.Description}
+                                    {product.Description} - £{product.Price} (Barcode {product.Barcode})
                                 </Text>
-                                <Text size="sm" c="dimmed">
-                                    {product.Price}
-                                </Text>
-                                <Text size="sm" c="dimmed">
-                                    {product.Barcode}
-                                    <svg
-                                        className="barcode"
-                                        jsbarcode-format="EAN13"
-                                        jsbarcode-value={getPaddedBarcode(product.Barcode)}
-                                        jsbarcode-textmargin="0"
-                                        jsbarcode-fontoptions="bold"
-                                    />
-                                </Text>
+                                <svg
+                                    className="barcode"
+                                    jsbarcode-format="EAN13"
+                                    jsbarcode-value={getPaddedBarcode(product.Barcode)}
+                                    jsbarcode-textmargin="0"
+                                    jsbarcode-fontoptions="bold"
+                                />
                             </React.Fragment>
                         ))
                     )}
