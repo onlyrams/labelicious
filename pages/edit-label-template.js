@@ -1,18 +1,22 @@
-import { Textarea } from "@mantine/core";
+import { Input, Textarea } from "@mantine/core";
 import JsBarcode from "jsbarcode";
 import { useEffect, useRef, useState } from "react";
 
 export default function EditLabel() {
     const canvasRef = useRef(null);
     const [template, setTemplate] = useState(null);
+    const [barcode, setBarcode] = useState("90453922");
+    const [productName, setProductName] = useState("Special offer");
 
     useEffect(() => {
         const fetchTemplate = async () => {
-            const response = await fetch('/templates/promotions/promo-purple/promo-purple-template.json');
+            const response = await fetch(
+                "/templates/promotions/promo-purple/promo-purple-template.json"
+            );
             const template = await response.json();
             setTemplate(template);
             return template;
-        }
+        };
 
         fetchTemplate();
     }, [setTemplate]);
@@ -20,39 +24,53 @@ export default function EditLabel() {
     console.log(template);
 
     useEffect(() => {
-        if (!template) {
+        if (!template || !barcode || !productName) {
             return;
         }
 
         const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
+        const context = canvas.getContext("2d");
         canvas.width = Math.floor(template.size.width);
         canvas.height = Math.floor(template.size.height);
 
-        let barcode = new Image();
+        let barcodeImage = new Image();
 
-        barcode.onload = () => {
-            context.drawImage(barcode, template.barcode.xPosition, template.barcode.yPosition, barcode.width, barcode.height);
+        barcodeImage.onload = () => {
+            context.drawImage(
+                barcodeImage,
+                template.barcode.xPosition,
+                template.barcode.yPosition,
+                barcodeImage.width,
+                barcodeImage.height
+            );
             context.font = template.productName.options.font;
             context.textAlign = template.productName.options.textAlign;
 
-            context.fillText("Special offer", template.productName.xPosition, template.productName.yPosition, template.productName.maxWidth);
-        }
+            context.fillText(
+                productName,
+                template.productName.xPosition,
+                template.productName.yPosition,
+                template.productName.maxWidth
+            );
+        };
 
         let bgImage = new Image();
         bgImage.src = template.background.src;
         bgImage.onload = () => {
             context.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
-
-            const barcodeId = 90453922;
-            JsBarcode(barcode, barcodeId.toString().padStart(13, "0"), template.barcode.options);
-
-        }
-    }, [template]);
+            JsBarcode(
+                barcodeImage,
+                barcode.padStart(13, "0"),
+                template.barcode.options
+            );
+        };
+    }, [template, barcode, productName]);
 
     return (
         <div>
             <canvas ref={canvasRef}></canvas>
+            <Input value={barcode} onChange={(e) => setBarcode(e.target.value)} />
+            <Input value={productName} onChange={(e) => setProductName(e.target.value)} />
             <Textarea
                 rows={20}
                 mt="md"

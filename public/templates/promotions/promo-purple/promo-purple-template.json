@@ -20,10 +20,10 @@
   "productName": {
     "options": {
       "font": "36px sans-serif",
-      "textAlign": "left"
+      "textAlign": "center"
     },
-    "xPosition": 360,
-    "yPosition": 60,
-    "maxWidth": 200
+    "xPosition": 460,
+    "yPosition": 70,
+    "maxWidth": 250
   }
 }
