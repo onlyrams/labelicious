@@ -1,0 +1,29 @@
+{
+  "background": {
+    "src": "/templates/promotions/promo-purple/promo-purple.png"
+  },
+  "size": {
+    "width": 670,
+    "height": 112
+  },
+  "barcode": {
+    "options": {
+      "format": "EAN13",
+      "height": 20,
+      "textMargin": 0,
+      "fontSize": 12,
+      "margin": 0
+    },
+    "xPosition": 0,
+    "yPosition": 80
+  },
+  "productName": {
+    "options": {
+      "font": "36px sans-serif",
+      "textAlign": "left"
+    },
+    "xPosition": 360,
+    "yPosition": 60,
+    "maxWidth": 200
+  }
+}

@@ -26,7 +26,7 @@ function Application({ Component, pageProps }) {
       <AppShell
         header={{ height: 60 }}
         navbar={{
-          width: 300,
+          width: 230,
           breakpoint: "sm",
           collapsed: { mobile: !opened },
         }}

@@ -12,7 +12,7 @@ const data = [
     { link: '/stock', label: 'Stock file', icon: IconBuildingWarehouse },
     { link: '/labels', label: 'Labels', icon: IconTags },
     { link: '/promo-labels', label: 'Promos', icon: IconTagStarred },
-    { link: '/edit-label', label: 'Edit Label Templates', icon: IconEdit },
+    { link: '/edit-label-template', label: 'Edit Label Templates', icon: IconEdit },
 ];
 
 /// Rename to 'Navigation' ///
