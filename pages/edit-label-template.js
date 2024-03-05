@@ -1,4 +1,4 @@
-import { Autocomplete, Grid, GridCol, Input, Select, Textarea } from "@mantine/core";
+import { Grid, GridCol, Input, Select, Textarea } from "@mantine/core";
 import JsBarcode from "jsbarcode";
 import { useEffect, useRef, useState } from "react";
 
