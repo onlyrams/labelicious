@@ -1,25 +1,39 @@
-import { Input, Textarea } from "@mantine/core";
+import { Autocomplete, Grid, GridCol, Input, Select, Textarea } from "@mantine/core";
 import JsBarcode from "jsbarcode";
 import { useEffect, useRef, useState } from "react";
+
+const templates = [
+    {
+        displayName: "Purple Promo",
+        templateUrl:
+            "/templates/promotions/promo-purple/promo-purple-template.json",
+    },
+    {
+        displayName: "Yellow Promo",
+        templateUrl:
+            "/templates/promotions/promo-yellow/promo-yellow-template.json",
+    },
+];
 
 export default function EditLabel() {
     const canvasRef = useRef(null);
     const [template, setTemplate] = useState(null);
     const [barcode, setBarcode] = useState("90453922");
     const [productName, setProductName] = useState("Special offer");
+    const [templateName, setTemplateName] = useState("Purple Promo");
 
     useEffect(() => {
         const fetchTemplate = async () => {
-            const response = await fetch(
-                "/templates/promotions/promo-purple/promo-purple-template.json"
-            );
+            const templateUrl = templates.find(
+                (template) => template.displayName === templateName
+            ).templateUrl;
+            const response = await fetch(templateUrl);
             const template = await response.json();
             setTemplate(template);
-            return template;
         };
 
         fetchTemplate();
-    }, [setTemplate]);
+    }, [templates, templateName]);
 
     console.log(template);
 
@@ -43,8 +57,10 @@ export default function EditLabel() {
                 barcodeImage.width,
                 barcodeImage.height
             );
+
             context.font = template.productName.options.font;
             context.textAlign = template.productName.options.textAlign;
+            context.fillStyle = template.productName.options.fillStyle;
 
             context.fillText(
                 productName,
@@ -67,21 +83,46 @@ export default function EditLabel() {
     }, [template, barcode, productName]);
 
     return (
-        <div>
-            <canvas ref={canvasRef}></canvas>
-            <Input value={barcode} onChange={(e) => setBarcode(e.target.value)} />
-            <Input value={productName} onChange={(e) => setProductName(e.target.value)} />
-            <Textarea
-                rows={20}
-                mt="md"
-                size="sm"
-                resize="true"
-                label="Template"
-                description="JSON data for rendering the label from a template"
-                placeholder="Input placeholder"
-                value={JSON.stringify(template, null, 4)}
-                onChange={(e) => setTemplate(JSON.parse(e.target.value))}
-            />
-        </div>
+        <Grid>
+            <GridCol>
+                <canvas ref={canvasRef}></canvas>
+                <Input
+                    value={barcode}
+                    onChange={(e) => setBarcode(e.target.value)}
+                    mt="md"
+                />
+                <Input
+                    value={productName}
+                    onChange={(e) => setProductName(e.target.value)}
+                    mt="md"
+                />
+                <Select
+                    value={templateName}
+                    onChange={setTemplateName}
+                    data={templates.map((t) => t.displayName)}
+                    mt="md"
+                />
+                <Textarea
+                    autosize
+                    mt="md"
+                    size="sm"
+                    resize="true"
+                    label="Template"
+                    description="JSON data for rendering the label from a template"
+                    placeholder="Input placeholder"
+                    value={JSON.stringify(template, null, 4)}
+                    onChange={(e) => {
+                        setTemplate((prev) => {
+                            try {
+                                return JSON.parse(e.target.value);
+                            } catch (e) {
+                                console.error(e);
+                                setTemplate(prev);
+                            }
+                        });
+                    }}
+                />
+            </GridCol>
+        </Grid>
     );
 }
