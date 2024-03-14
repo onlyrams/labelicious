@@ -43,13 +43,14 @@ export default function EditLabel() {
         }
 
         const canvas = canvasRef.current;
-        const context = canvas.getContext("2d");
+        let context = canvas.getContext("2d");
         canvas.width = Math.floor(template.size.width);
         canvas.height = Math.floor(template.size.height);
 
         let barcodeImage = new Image();
 
         barcodeImage.onload = () => {
+
             context.drawImage(
                 barcodeImage,
                 template.barcode.xPosition,
@@ -58,9 +59,7 @@ export default function EditLabel() {
                 barcodeImage.height
             );
 
-            context.font = template.productName.options.font;
-            context.textAlign = template.productName.options.textAlign;
-            context.fillStyle = template.productName.options.fillStyle;
+            context = Object.assign(context, template.productName.options);
 
             context.fillText(
                 productName,
@@ -74,6 +73,7 @@ export default function EditLabel() {
         bgImage.src = template.background.src;
         bgImage.onload = () => {
             context.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+
             JsBarcode(
                 barcodeImage,
                 barcode.padStart(13, "0"),

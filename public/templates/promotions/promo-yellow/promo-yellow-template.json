@@ -15,7 +15,7 @@
       "margin": 0
     },
     "xPosition": 0,
-    "yPosition": 80
+    "yPosition": 0
   },
   "productName": {
     "options": {
@@ -23,8 +23,7 @@
       "textAlign": "center",
       "fillStyle": "#FFF"
     },
-    "xPosition": 460,
-    "yPosition": 70,
-    "maxWidth": 250
+    "xPosition": 335,
+    "yPosition": 70
   }
 }
