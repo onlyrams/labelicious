@@ -4,7 +4,7 @@ import {
     IconTagStarred,
     IconEdit
 } from '@tabler/icons-react';
-import classes from './sidebar.module.css';
+import classes from './navigation.module.css';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -15,8 +15,7 @@ const data = [
     { link: '/edit-label-template', label: 'Edit Label Templates', icon: IconEdit },
 ];
 
-/// Rename to 'Navigation' ///
-export function Sidebar({ onClick }) {
+export function Navigation({ onClick }) {
     const pathname = usePathname();
 
     const links = data.map((item) => (
