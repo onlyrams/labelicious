@@ -2,8 +2,8 @@ import { parse } from "csv-parse/sync";
 
 export function parsePromo(promo) {
     const promotionIdRegex = /Promotion ID: (\d+) - /;
-    const promoPriceRegEx = /(?:\£\d+(?:\.\d+)?)|\d+(?:\.\d+)?\s*(?:for\s*\£\d+(?:\.\d+)?)|(?:\d+)\s*for\s*\£(\d+(?:\.\d+)?)?\n/gi;
-    const productNameRegEx = /(?<=Promotion ID: \d+ - )[\w\s/]+((?= £\d+?\.?\d{0,2}?)|(?= \d+for£\d+))/gi
+    const promoPriceRegEx = /(BOGOF)|(\d+p)|(?:\£\d+(?:\.\d+)?)|\d+(?:\.\d+)?\s*(?:for\s*\£\d+(?:\.\d+)?)|(?:\d+)\s*for\s*\£(\d+(?:\.\d+)?)?\n/gi;
+    const productNameRegEx = /(?<=Promotion ID: \d+ - )[\w\s/]+((BOGOF)|(?= £\d+?\.?\d{0,2}?)|(?= \d+for£\d+))/gi
 
 
     const result = {
