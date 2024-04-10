@@ -43,6 +43,7 @@ export default function PrintLabels() {
                                 mb="md"
                                 size="md"
                             />
+                            {currentBarcode && <LabelPreview barcode={currentBarcode} />}
                             <Button
                                 onClick={() => setLabels((prev) => [...prev, currentBarcode])}
                                 m={1}

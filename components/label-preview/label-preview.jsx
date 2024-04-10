@@ -32,8 +32,8 @@ const template = {
 };
 
 export default function LabelPreview(props) {
-  const [barcode, setBarcode] = useState("90453922");
-  const [productName, setProductName] = useState("Special offer");
+  const [barcode, setBarcode] = useState(props.barcode || "90453922"); // From props
+  const [productName, setProductName] = useState("Special offer"); // From props - or lookup barcode
   const canvasRef = useRef(null);
 
   useEffect(() => {
