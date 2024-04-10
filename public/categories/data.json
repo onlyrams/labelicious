@@ -14,7 +14,7 @@
           },
           "barcode": {
             "options": {
-              "format": "EAN13",
+              "format": "EAN13 // Needs to be detected from length, remove",
               "height": 20,
               "textMargin": 0,
               "fontSize": 12,
